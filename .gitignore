@@ -1,7 +1,5 @@
-/*
+*
+!*/
 !.gitignore
-!README.md
-!LICENSE
-!mergeOrderedArrays.cpp
-!removingElements.cpp
+!*.cpp
 
