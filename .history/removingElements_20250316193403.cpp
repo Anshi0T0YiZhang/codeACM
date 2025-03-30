@@ -1,2 +1,0 @@
-#inculde <iostream>
-#include <vector>
