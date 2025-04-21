@@ -3,6 +3,5 @@
 !*.cpp
 .history/
 !leetcode/
-!huawei/
-
+!contestReview/
 
