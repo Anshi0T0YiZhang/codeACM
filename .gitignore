@@ -1,6 +1,9 @@
 *
 !.gitignore
 !*.cpp
+!*.md
+!*.png
+!*.jpg
 .history/
 !leetcode/
 !contestReview/
