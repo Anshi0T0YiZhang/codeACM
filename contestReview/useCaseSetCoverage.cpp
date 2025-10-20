@@ -6,10 +6,11 @@ using namespace std;
 
 int main() {
     int i, j;
-    cin >> i >> j;
+    cin >> i >> j; 
+    // i为测试用例个数，j为模块个数; 行为测试用例个数，列为模块个数
     
-    vector<int> case_masks(i, 0);
-    vector<bool> module_covered(j, false);
+    vector<int> case_masks(i, 0); // 记录每个测试用例的覆盖情况
+    vector<bool> module_covered(j, false); // 记录每个模块是否被测试用例覆盖
     
     for (int idx = 0; idx < i; ++idx) {
         int mask = 0;
@@ -24,7 +25,8 @@ int main() {
         case_masks[idx] = mask;
     }
     
-    // 检查是否所有模块都被覆盖
+    // 检查是否所有模块都被覆盖,若存在未被覆盖的模块, 直接输出 -1 并结束程序
+    // 行为全0
     for (bool covered : module_covered) {
         if (!covered) {
             cout << -1 << endl;

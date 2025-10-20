@@ -8,14 +8,19 @@
 
 using namespace std;
 
+//用于表示地铁线路中的一个状态,集包含一个站点名称(string类型)和改站点所在的线路索引(int类型).
+// 例如: State("A", 1) 表示站点A在线路1上.
 typedef pair<string, int> State; // (station, line_index)
 
-struct StateHash {
+//在unordered_map或其他需要哈希值的容器中,StateHash用于将State对象银蛇为哈希值,一边快速查找和储存
+//s.first为站点名称,s.second为线路索引.
+struct StateHash { 
     size_t operator()(const State& s) const {
         return hash<string>()(s.first) ^ hash<int>()(s.second);
     }
 };
 
+//用于判断两个State对象是否相等,一边快速查找和储存
 struct StateEqual {
     bool operator()(const State& a, const State& b) const {
         return a.first == b.first && a.second == b.second;
@@ -24,23 +29,23 @@ struct StateEqual {
 
 int main() {
     int N;
-    cin >> N;
+    cin >> N; // 线路数
     cin.ignore(); // 忽略第一行后的换行
     
-    vector<vector<string>> stations(N);
-    unordered_map<string, vector<int>> station_lines;
-    vector<unordered_map<string, int>> station_pos(N);
+    vector<vector<string>> stations(N);  // 各线路的站点名称
+    unordered_map<string, vector<int>> station_lines;  // 用于快速查找站点所在的线路索引
+    vector<unordered_map<string, int>> station_pos(N); // 用于快速查找站点在线路中的位置
     
     for (int i = 0; i < N; ++i) {
-        string line;
-        getline(cin, line);
-        istringstream iss(line);
-        string station;
+        string line; // 第i条线路的站点名称
+        getline(cin, line);  // 读取一行
+        istringstream iss(line);  // 创建字符串流
+        string station; // 站点名称
         int pos = 0;
-        while (iss >> station) {
-            stations[i].push_back(station);
-            station_lines[station].push_back(i);
-            station_pos[i][station] = pos;
+        while (iss >> station) { //从字符串 line 中逐个提取按空格分隔的站点名称
+            stations[i].push_back(station); // 记录站点名称
+            station_lines[station].push_back(i); // 记录站点所在的线路索引
+            station_pos[i][station] = pos; // 记录站点在线路中的位置
             pos++;
         }
     }
@@ -49,14 +54,17 @@ int main() {
     cin >> start >> end;
     
     if (station_lines.find(start) == station_lines.end() || station_lines.find(end) == station_lines.end()) {
-        cout << "NA" << endl;
+        cout << "NA" << endl; //如果起点或终点不在任何地铁线路上，程序将输出 "NA" 并结束。
         return 0;
     }
     
     // Dijkstra准备
-    priority_queue<pair<int, State>, vector<pair<int, State>>, greater<pair<int, State>>> pq;
+    priority_queue<pair<int, State>, vector<pair<int, State>>, greater<pair<int, State>>> pq; 
+    // 存储路径成本和当前状态（站点和线路索引），并按路径成本从小到大排序
     unordered_map<State, int, StateHash, StateEqual> dist;
+    // 存储从起点到达每个状态的最小路径成本
     unordered_map<State, State, StateHash, StateEqual> prev;
+    // 存储每个状态的前一个状态
     
     for (int line : station_lines[start]) {
         State st = {start, line};
@@ -162,6 +170,8 @@ int main() {
     
     return 0;
 }
+
+// Dijkstra 读作 "戴克斯特拉"
 /*
 输入:3
 A B C D F
